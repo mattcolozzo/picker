@@ -47,27 +47,27 @@ const WheelSpinner: React.FC<WheelSpinnerProps> = ({
 
   // Calculate slice angles
   const sliceAngle = 360 / totalWords;
-  const radius = 120;
-  const centerX = 150;
-  const centerY = 150;
+  const radius = 240;
+  const centerX = 260;
+  const centerY = 260;
 
-  // Color palette for wheel slices
+  // Color palette for wheel slices - darker colors for better contrast
   const colors = [
-    '#4f9eff',
-    '#ff6b6b',
-    '#51cf66',
-    '#ffd43b',
-    '#9775fa',
-    '#ff8787',
-    '#69db7c',
-    '#ffe066',
-    '#a78bfa',
-    '#74c0fc',
-    '#ff9999',
-    '#8ce99a',
-    '#ffec99',
-    '#b197fc',
-    '#91d5ff',
+    '#2563eb', // Deep blue
+    '#dc2626', // Deep red
+    '#16a34a', // Deep green
+    '#ea580c', // Deep orange
+    '#7c3aed', // Deep purple
+    '#db2777', // Deep pink
+    '#0891b2', // Deep cyan
+    '#ca8a04', // Deep yellow/gold
+    '#9333ea', // Deep violet
+    '#0284c7', // Deep sky blue
+    '#be123c', // Deep rose
+    '#15803d', // Deep emerald
+    '#c2410c', // Deep orange-red
+    '#6366f1', // Deep indigo
+    '#0d9488', // Deep teal
   ];
 
   const createSlicePath = (index: number): string => {
@@ -95,6 +95,18 @@ const WheelSpinner: React.FC<WheelSpinnerProps> = ({
     const x = centerX + textRadius * Math.cos(angle);
     const y = centerY + textRadius * Math.sin(angle);
     return { x, y };
+  };
+
+  const getTextRotation = (index: number) => {
+    // Calculate the angle for this slice (0 is at top)
+    const angle = index * sliceAngle + sliceAngle / 2 - 90;
+
+    // If text would be upside down (bottom half of wheel), flip it 180 degrees
+    // Bottom half is when angle is between 90 and 270 (in standard position)
+    if (angle > 90 && angle < 270) {
+      return angle + 180;
+    }
+    return angle;
   };
 
   // Simple wheel styling - use single animation that handles both spinning and deceleration
@@ -127,8 +139,8 @@ const WheelSpinner: React.FC<WheelSpinnerProps> = ({
         <div className='wheel-pointer'></div>
 
         <svg
-          width='300'
-          height='300'
+          width='520'
+          height='520'
           className='wheel-svg'
           style={getWheelStyle()}
         >
@@ -153,12 +165,15 @@ const WheelSpinner: React.FC<WheelSpinnerProps> = ({
                   textAnchor='middle'
                   dominantBaseline='central'
                   className='wheel-text'
-                  fontSize={totalWords > 8 ? '10' : '12'}
+                  fontSize={totalWords > 8 ? '16' : '18'}
                   fill='white'
                   fontWeight='bold'
                   textShadow='1px 1px 2px rgba(0,0,0,0.5)'
+                  transform={`rotate(${getTextRotation(index)}, ${textPos.x}, ${
+                    textPos.y
+                  })`}
                 >
-                  {word.length > 8 ? `${word.substring(0, 6)}...` : word}
+                  {word.length > 12 ? `${word.substring(0, 10)}...` : word}
                 </text>
               </g>
             );
@@ -168,10 +183,10 @@ const WheelSpinner: React.FC<WheelSpinnerProps> = ({
           <circle
             cx={centerX}
             cy={centerY}
-            r='20'
+            r='40'
             fill='rgba(255, 255, 255, 0.9)'
             stroke='#333'
-            strokeWidth='2'
+            strokeWidth='4'
           />
         </svg>
       </div>

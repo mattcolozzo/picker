@@ -19,6 +19,13 @@ const PickerSection: React.FC<PickerSectionProps> = ({
 
   return (
     <div className='picker-section'>
+      {selectedWord && (
+        <div className={`selected-word ${isPicking ? 'animating' : 'final'}`}>
+          <h2>Selected:</h2>
+          <div className='selected-word-display'>{selectedWord}</div>
+        </div>
+      )}
+
       <button
         onClick={onPickRandomWord}
         disabled={isPicking}
@@ -26,13 +33,6 @@ const PickerSection: React.FC<PickerSectionProps> = ({
       >
         {isPicking ? 'Picking...' : 'Pick Random Word'}
       </button>
-
-      {selectedWord && (
-        <div className={`selected-word ${isPicking ? 'animating' : 'final'}`}>
-          <h2>Selected:</h2>
-          <div className='selected-word-display'>{selectedWord}</div>
-        </div>
-      )}
     </div>
   );
 };

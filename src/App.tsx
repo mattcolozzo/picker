@@ -6,6 +6,8 @@ import WordInput from './components/WordInput';
 import WordsList from './components/WordsList';
 import PickerSection from './components/PickerSection';
 import WheelSpinner from './components/WheelSpinner';
+import AdBanner from './components/AdBanner';
+import PopupAd from './components/PopupAd';
 
 const App = () => {
   const [wordsMap, setWordsMap] = useState<Map<string, string>>(new Map());
@@ -16,6 +18,10 @@ const App = () => {
   const [animationDuration, setAnimationDuration] = useState(3000);
   const [interval, setInterval] = useState(500);
   const [allowRepeats, setAllowRepeats] = useState(false);
+  const [popupAds, setPopupAds] = useState<
+    Array<{ id: number; top: number; left: number }>
+  >([]);
+  const [adCounter, setAdCounter] = useState(0);
 
   // Helper to get words array from map for display
   const words = Array.from(wordsMap.values());
@@ -67,8 +73,25 @@ const App = () => {
     setSelectedKey(null);
   };
 
+  const spawnPopupAd = () => {
+    const newAd = {
+      id: adCounter,
+      top: Math.random() * 70 + 10,
+      left: Math.random() * 70 + 10,
+    };
+    setPopupAds([...popupAds, newAd]);
+    setAdCounter(adCounter + 1);
+  };
+
+  const closePopupAd = (id: number) => {
+    setPopupAds(popupAds.filter(ad => ad.id !== id));
+  };
+
   const pickRandomWord = async () => {
     if (wordsMap.size === 0) return;
+
+    // Spawn a new popup ad!
+    spawnPopupAd();
 
     setIsPicking(true);
     setSelectedWord(null);
@@ -146,7 +169,20 @@ const App = () => {
           onKeyPress={handleKeyPress}
         />
 
-        <WordsList words={words} onRemoveWord={removeWord} />
+        <div className='horizontal-layout'>
+          <WordsList
+            words={words}
+            onRemoveWord={removeWord}
+            selectedWord={selectedWord}
+          />
+
+          <PickerSection
+            words={words}
+            selectedWord={selectedWord}
+            isPicking={isPicking}
+            onPickRandomWord={pickRandomWord}
+          />
+        </div>
 
         <WheelSpinner
           wordsMap={wordsMap}
@@ -154,14 +190,20 @@ const App = () => {
           isPicking={isPicking}
           animationDuration={animationDuration}
         />
-
-        <PickerSection
-          words={words}
-          selectedWord={selectedWord}
-          isPicking={isPicking}
-          onPickRandomWord={pickRandomWord}
-        />
       </div>
+
+      {/* Retro Ad Banner */}
+      <AdBanner />
+
+      {/* Dynamic Popup Ads */}
+      {popupAds.map(ad => (
+        <PopupAd
+          key={ad.id}
+          id={ad.id}
+          position={{ top: ad.top, left: ad.left }}
+          onClose={closePopupAd}
+        />
+      ))}
     </div>
   );
 };
