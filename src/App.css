@@ -511,6 +511,18 @@ body {
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
+.control-button.upload {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.control-button.upload:hover {
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+}
+
 .content {
   display: flex;
   flex: 1;

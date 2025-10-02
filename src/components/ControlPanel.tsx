@@ -9,6 +9,7 @@ interface ControlPanelProps {
   onAllowRepeatsChange: (value: boolean) => void;
   onLoadDefaultWords: () => void;
   onClearAllWords: () => void;
+  onUploadFile: (names: string[]) => void;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -20,7 +21,30 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   onAllowRepeatsChange,
   onLoadDefaultWords,
   onClearAllWords,
+  onUploadFile,
 }) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        const names = Array.isArray(json)
+          ? json
+          : json.names || json.words || [];
+        onUploadFile(names);
+      } catch (error) {
+        alert(
+          'Invalid JSON file. Please upload a valid JSON array or object with "names" or "words" property.'
+        );
+      }
+    };
+    reader.readAsText(file);
+
+    e.target.value = '';
+  };
   return (
     <div className='control-panel'>
       <h3>Animation Settings</h3>
@@ -75,9 +99,23 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         <p>Duration: How long the picking animation runs</p>
         <p>Speed: How fast words change (minimum 150ms for comfort)</p>
         <p>Allow Repeats: Whether the same word can be picked twice in a row</p>
+        <p>
+          Upload JSON: Upload an array of names or object with "names" property
+        </p>
       </div>
 
       <div className='control-actions'>
+        <label htmlFor='file-upload' className='control-button upload'>
+          Upload JSON File
+          <input
+            id='file-upload'
+            type='file'
+            accept='.json'
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+          />
+        </label>
+
         <button onClick={onLoadDefaultWords} className='control-button'>
           Load Default Words
         </button>

@@ -87,6 +87,20 @@ const App = () => {
     setPopupAds(popupAds.filter(ad => ad.id !== id));
   };
 
+  const handleFileUpload = (uploadedNames: string[]) => {
+    const newMap = new Map(wordsMap);
+    uploadedNames.forEach(name => {
+      const trimmedName = typeof name === 'string' ? name.trim() : String(name);
+      if (trimmedName && !words.includes(trimmedName)) {
+        const newKey = `word-${Date.now()}-${Math.random()
+          .toString(36)
+          .substr(2, 9)}`;
+        newMap.set(newKey, trimmedName);
+      }
+    });
+    setWordsMap(newMap);
+  };
+
   const pickRandomWord = async () => {
     if (wordsMap.size === 0) return;
 
@@ -156,6 +170,7 @@ const App = () => {
         onAllowRepeatsChange={setAllowRepeats}
         onLoadDefaultWords={loadDefaultWords}
         onClearAllWords={clearAllWords}
+        onUploadFile={handleFileUpload}
       />
 
       <div className='content'>
