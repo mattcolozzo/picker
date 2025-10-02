@@ -160,7 +160,6 @@ const App = () => {
 
       <div className='content'>
         <h1>Pick me!</h1>
-        <p>Add words to your list and let fate decide!</p>
 
         <WordInput
           inputValue={inputValue}
