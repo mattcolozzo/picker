@@ -621,6 +621,38 @@ body {
   opacity: 0.8;
 }
 
+.word-filter-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.word-filter-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.word-filter-input:focus {
+  outline: none;
+  border-color: rgba(79, 158, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(79, 158, 255, 0.1);
+}
+
+.no-results {
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  padding: 1rem;
+}
+
 .words-list {
   display: flex;
   flex-wrap: wrap;
@@ -734,6 +766,7 @@ body {
   min-width: 180px;
   position: relative;
   overflow: hidden;
+  z-index: 9999;
 }
 
 .pick-button:hover:not(:disabled) {
@@ -748,6 +781,37 @@ body {
 
 .pick-button.picking {
   animation: pulse 1s infinite;
+}
+
+.hard-mode-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  min-width: 180px;
+  backdrop-filter: blur(10px);
+}
+
+.hard-mode-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.hard-mode-button.active {
+  background: linear-gradient(135deg, #ff9500, #ff5e00);
+  border: 2px solid #ffaa00;
+  box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
+}
+
+.hard-mode-button.active:hover {
+  background: linear-gradient(135deg, #ffaa00, #ff6e00);
+  box-shadow: 0 6px 20px rgba(255, 149, 0, 0.5);
 }
 
 .selected-word {

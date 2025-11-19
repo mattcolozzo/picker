@@ -24,7 +24,7 @@ const WordInput: React.FC<WordInputProps> = ({
         className='word-input'
       />
       <button onClick={onAddWord} className='add-button'>
-        Add Word
+        Add
       </button>
     </div>
   );

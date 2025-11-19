@@ -22,9 +22,16 @@ const App = () => {
     Array<{ id: number; top: number; left: number }>
   >([]);
   const [adCounter, setAdCounter] = useState(0);
+  const [hardMode, setHardMode] = useState(false);
+  const [hardModeClickCount, setHardModeClickCount] = useState(0);
+  const [wordFilter, setWordFilter] = useState('');
 
-  // Helper to get words array from map for display
   const words = Array.from(wordsMap.values());
+  const filteredWords = wordFilter
+    ? words.filter(word =>
+        word.toLowerCase().includes(wordFilter.toLowerCase())
+      )
+    : words;
 
   const addWord = () => {
     const newWord = inputValue.trim();
@@ -104,7 +111,8 @@ const App = () => {
   const pickRandomWord = async () => {
     if (wordsMap.size === 0) return;
 
-    // Spawn a new popup ad!
+    setHardModeClickCount(0);
+
     spawnPopupAd();
 
     setIsPicking(true);
@@ -185,9 +193,12 @@ const App = () => {
 
         <div className='horizontal-layout'>
           <WordsList
-            words={words}
+            words={filteredWords}
+            allWords={words}
             onRemoveWord={removeWord}
             selectedWord={selectedWord}
+            filterValue={wordFilter}
+            onFilterChange={setWordFilter}
           />
 
           <PickerSection
@@ -195,6 +206,13 @@ const App = () => {
             selectedWord={selectedWord}
             isPicking={isPicking}
             onPickRandomWord={pickRandomWord}
+            hardMode={hardMode}
+            hardModeClickCount={hardModeClickCount}
+            onHardModeToggle={() => setHardMode(!hardMode)}
+            onHardModeClick={() =>
+              setHardModeClickCount(hardModeClickCount + 1)
+            }
+            onSpawnAd={spawnPopupAd}
           />
         </div>
 
