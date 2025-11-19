@@ -23,7 +23,10 @@ const PickerSection: React.FC<PickerSectionProps> = ({
   onHardModeClick,
   onSpawnAd,
 }) => {
-  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
+  const [buttonPosition, setButtonPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   if (words.length === 0) {
     return null;
@@ -43,19 +46,13 @@ const PickerSection: React.FC<PickerSectionProps> = ({
     }
 
     if (hardModeClickCount < 4) {
-      const randomPercentX = Math.random() * 60 - 30;
-      const randomPercentY = Math.random() * 50 - 25;
-
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-
-      const randomX = (randomPercentX / 100) * viewportWidth;
-      const randomY = (randomPercentY / 100) * viewportHeight;
-
-      setButtonPosition({ x: randomX, y: randomY });
+      setButtonPosition({
+        top: Math.random() * 70 + 10,
+        left: Math.random() * 70 + 10,
+      });
       onHardModeClick();
     } else {
-      setButtonPosition({ x: 0, y: 0 });
+      setButtonPosition(null);
       onPickRandomWord();
     }
   };
@@ -72,11 +69,18 @@ const PickerSection: React.FC<PickerSectionProps> = ({
       <button
         onClick={handlePickClick}
         disabled={isPicking}
-        className={`pick-button ${isPicking ? 'picking' : ''}`}
-        style={{
-          transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
-          transition: 'transform 0.3s ease',
-        }}
+        className={`pick-button ${isPicking ? 'picking' : ''} ${
+          buttonPosition ? 'flying' : ''
+        }`}
+        style={
+          buttonPosition
+            ? {
+                position: 'fixed',
+                top: `${buttonPosition.top}%`,
+                left: `${buttonPosition.left}%`,
+              }
+            : {}
+        }
       >
         {isPicking ? 'Picking...' : 'Pick'}
       </button>
