@@ -10,6 +10,7 @@ interface PickerSectionProps {
   onHardModeToggle: () => void;
   onHardModeClick: () => void;
   onSpawnAd: () => void;
+  onSpawnMultipleAds: (count: number) => void;
 }
 
 const PickerSection: React.FC<PickerSectionProps> = ({
@@ -22,6 +23,7 @@ const PickerSection: React.FC<PickerSectionProps> = ({
   onHardModeToggle,
   onHardModeClick,
   onSpawnAd,
+  onSpawnMultipleAds,
 }) => {
   const [buttonPosition, setButtonPosition] = useState<{
     top: number;
@@ -34,8 +36,7 @@ const PickerSection: React.FC<PickerSectionProps> = ({
 
   const handlePickClick = () => {
     if (hardMode) {
-      onSpawnAd();
-      onSpawnAd();
+      onSpawnMultipleAds(2);
     } else {
       onSpawnAd();
     }

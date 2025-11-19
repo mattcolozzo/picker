@@ -90,6 +90,22 @@ const App = () => {
     setAdCounter(adCounter + 1);
   };
 
+  const spawnMultipleAds = (count: number) => {
+    const startId = adCounter;
+    setPopupAds(prevAds => {
+      const newAds = [];
+      for (let i = 0; i < count; i++) {
+        newAds.push({
+          id: startId + i,
+          top: Math.random() * 70 + 10,
+          left: Math.random() * 70 + 10,
+        });
+      }
+      return [...prevAds, ...newAds];
+    });
+    setAdCounter(prev => prev + count);
+  };
+
   const closePopupAd = (id: number) => {
     setPopupAds(popupAds.filter(ad => ad.id !== id));
   };
@@ -213,6 +229,7 @@ const App = () => {
               setHardModeClickCount(hardModeClickCount + 1)
             }
             onSpawnAd={spawnPopupAd}
+            onSpawnMultipleAds={spawnMultipleAds}
           />
         </div>
 
